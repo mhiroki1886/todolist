@@ -10,24 +10,26 @@ function App() {
     <>
       <div id="todo-list-header">
         <h1>TODO LIST</h1>
-        <form
-          id="add-task-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handle.addTask();
-          }}
-        >
-          <input
-            type="text"
-            placeholder="タスクを追加"
-            value={data.newTask}
-            onChange={(e) => handle.onChangeNewTask(e.currentTarget.value)}
-            autoComplete="off"
-          />
-          <button type="submit" onSubmit={handle.addTask}>
-            追加
-          </button>
-        </form>
+        {data.selected === Status.DELETE ? null : (
+          <form
+            id="add-task-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handle.addTask();
+            }}
+          >
+            <input
+              type="text"
+              placeholder="タスクを追加"
+              value={data.newTask}
+              onChange={(e) => handle.onChangeNewTask(e.currentTarget.value)}
+              autoComplete="off"
+            />
+            <button type="submit" onSubmit={handle.addTask}>
+              追加
+            </button>
+          </form>
+        )}
         <div id="select-task-form">
           <div className="todo-select">
             <select onChange={(e) => handle.onSelect(e.currentTarget.value as TodoStatus)}>
