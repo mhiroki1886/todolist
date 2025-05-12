@@ -32,19 +32,14 @@ function App() {
         )}
         <div id="select-task-form">
           <div className="todo-select">
-            <select onChange={(e) => handle.onSelect(e.currentTarget.value as TodoStatus)}>
-              <option value={Status.ALL} selected={data.selected === Status.ALL}>
-                全て
-              </option>
-              <option value={Status.ACTIVE} selected={data.selected === Status.ACTIVE}>
-                未完了
-              </option>
-              <option value={Status.COMPLETED} selected={data.selected === Status.COMPLETED}>
-                完了
-              </option>
-              <option value={Status.DELETE} selected={data.selected === Status.DELETE}>
-                ゴミ箱
-              </option>
+            <select
+              value={data.selected}
+              onChange={(e) => handle.onSelect(e.currentTarget.value as TodoStatus)}
+            >
+              <option value={Status.ALL}>全て</option>
+              <option value={Status.ACTIVE}>未完了</option>
+              <option value={Status.COMPLETED}>完了</option>
+              <option value={Status.DELETE}>ゴミ箱</option>
             </select>
           </div>
           {data.selected === Status.DELETE && (
@@ -55,40 +50,44 @@ function App() {
         </div>
       </div>
       <div id="todo-list">
-        {data.filteredTodo.map((t) => (
-          <div className="todo-item" key={t.id}>
-            <input
-              type="checkbox"
-              checked={t.done}
-              onChange={() => handle.toggleTask(t.id)}
-              disabled={t.deleted}
-            />
-            <input
-              type="text"
-              value={t.task}
-              onChange={(e) => handle.editTask(t.id, e.currentTarget.value)}
-              disabled={t.done || t.deleted}
-            />
-            {t.deleted ? (
-              <button
-                className="restore"
-                onClick={() => {
-                  handle.restoreTask(t.id);
-                }}
-              >
-                復元
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  handle.deleteTask(t.id);
-                }}
-              >
-                削除
-              </button>
-            )}
-          </div>
-        ))}
+        {data.filteredTodo.length === 0 ? (
+          <p className="none-task">タスクはありません。</p>
+        ) : (
+          data.filteredTodo.map((t) => (
+            <div className="todo-item" key={t.id}>
+              <input
+                type="checkbox"
+                checked={t.done}
+                onChange={() => handle.toggleTask(t.id)}
+                disabled={t.deleted}
+              />
+              <input
+                type="text"
+                value={t.task}
+                onChange={(e) => handle.editTask(t.id, e.currentTarget.value)}
+                disabled={t.done || t.deleted}
+              />
+              {t.deleted ? (
+                <button
+                  className="restore"
+                  onClick={() => {
+                    handle.restoreTask(t.id);
+                  }}
+                >
+                  復元
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    handle.deleteTask(t.id);
+                  }}
+                >
+                  削除
+                </button>
+              )}
+            </div>
+          ))
+        )}
       </div>
       {/* ゴミ箱を空にするダイアログ */}
       <DeleteDialog

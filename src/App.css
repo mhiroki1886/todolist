@@ -1,5 +1,6 @@
 html {
   height: 100%;
+  overflow-y: scroll;
 }
 
 body {
@@ -87,17 +88,16 @@ h1 {
 }
 
 #todo-list {
-  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .todo-item {
   display: flex;
   gap: 8px;
   align-items: center;
-  padding: 4px 16px;
+  padding: 8px 16px;
+  border-bottom: 1px dotted #ccc;
   span {
     font-size: 12px;
     flex-grow: 1;
@@ -123,7 +123,7 @@ h1 {
     border-color: #4682b4;
   }
   input[type="text"]:disabled {
-    background-color: #dcdcdc;
+    background-color: #e6e6fa;
   }
   button {
     width: 64px;
@@ -163,4 +163,9 @@ h1 {
     background-color: #ccc;
     cursor: not-allowed;
   }
+}
+.none-task {
+  padding: 0 16px;
+  font-size: 12px;
+  font-weight: bold;
 }
