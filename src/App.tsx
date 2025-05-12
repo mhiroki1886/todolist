@@ -1,5 +1,6 @@
 import "./App.css";
 import DeleteDialog from "./components/DeleteDialog";
+import Snackbar from "./components/Snackbar";
 import { useTodoList } from "./hooks/useTodoList";
 import { Status, type TodoStatus } from "./types";
 
@@ -91,9 +92,14 @@ function App() {
       </div>
       {/* ゴミ箱を空にするダイアログ */}
       <DeleteDialog
-        isOpen={data.isOpen}
+        isOpen={data.isDialogOpen}
         onClose={handle.toggleAlertDialog}
         onConfirm={handle.allDeleteTask}
+      />
+      <Snackbar
+        isOpen={data.isSnackbarOpen}
+        message={data.snackbarMessage}
+        onClose={handle.closeSnackbar}
       />
     </>
   );

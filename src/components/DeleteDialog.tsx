@@ -1,12 +1,12 @@
 import "./AlertDialog.css";
 
-interface Props {
+interface DeleteDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
 }
 
-export default function DeleteDialog({ isOpen, onClose, onConfirm }: Props) {
+export default function DeleteDialog({ isOpen, onClose, onConfirm }: DeleteDialogProps) {
   return (
     <div className={`alert-dialog ${isOpen ? "open" : "closed"}`}>
       <div className="alert-dialog-content">

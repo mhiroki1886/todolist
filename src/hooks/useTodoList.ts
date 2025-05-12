@@ -14,8 +14,12 @@ export function useTodoList() {
   const [newTask, setNewTask] = useState<string>("");
   // 選択されたタスクの状態を管理する
   const [selected, setSelected] = useState<TodoStatus>(Status.ALL);
-  // ダイアログのオープン状態を管理する
-  const [isOpen, setIsOpen] = useState(false);
+  // ダイアログの表示状態を管理する
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // スナックバーの表示状態を管理する
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+  // スナックバーのメッセージを管理する
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   // ローカルストレージに todo を保存する関数
   const setStorage = (newTodo: Todo[]) => {
@@ -37,6 +41,12 @@ export function useTodoList() {
     };
     setTodo([...todo, newTodo]);
     setStorage([...todo, newTodo]);
+    setIsSnackbarOpen(true);
+    setSnackbarMessage("タスクを追加しました。");
+    setTimeout(() => {
+      setIsSnackbarOpen(false);
+      setSnackbarMessage("");
+    }, 2000);
     setNewTask("");
   };
 
@@ -74,6 +84,12 @@ export function useTodoList() {
     });
     setStorage(newTodo);
     setTodo(newTodo);
+    setIsSnackbarOpen(true);
+    setSnackbarMessage("タスクの状態を変更しました。");
+    setTimeout(() => {
+      setIsSnackbarOpen(false);
+      setSnackbarMessage("");
+    }, 2000);
   };
 
   // タスクを編集する
@@ -98,6 +114,12 @@ export function useTodoList() {
     });
     setStorage(newTodo);
     setTodo(newTodo);
+    setIsSnackbarOpen(true);
+    setSnackbarMessage("タスクを削除しました。");
+    setTimeout(() => {
+      setIsSnackbarOpen(false);
+      setSnackbarMessage("");
+    }, 2000);
   };
 
   // タスクを復元する
@@ -114,7 +136,12 @@ export function useTodoList() {
 
   // ダイアログの表示状態を切り替える
   const toggleAlertDialog = () => {
-    setIsOpen((prev) => !prev);
+    setIsDialogOpen((prev) => !prev);
+  };
+
+  // スナックバーの表示状態を切り替える
+  const closeSnackbar = () => {
+    setIsSnackbarOpen(false);
   };
 
   // ゴミ箱を空にする
@@ -123,6 +150,12 @@ export function useTodoList() {
     setStorage(newTodo);
     setTodo(newTodo);
     toggleAlertDialog();
+    setIsSnackbarOpen(true);
+    setSnackbarMessage("ゴミ箱を空にしました。");
+    setTimeout(() => {
+      setIsSnackbarOpen(false);
+      setSnackbarMessage("");
+    }, 2000);
   };
 
   // useEffect を使って、todo の変更を監視し、フィルタリングを行う
@@ -132,7 +165,7 @@ export function useTodoList() {
 
   //
   return [
-    { todo, filteredTodo, newTask, selected, isOpen },
+    { todo, filteredTodo, newTask, selected, isDialogOpen, isSnackbarOpen, snackbarMessage },
     {
       onChangeNewTask,
       addTask,
@@ -142,6 +175,7 @@ export function useTodoList() {
       deleteTask,
       restoreTask,
       toggleAlertDialog,
+      closeSnackbar,
       allDeleteTask,
     },
   ] as const;
