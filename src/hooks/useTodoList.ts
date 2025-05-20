@@ -51,10 +51,9 @@ export function useTodoList() {
   };
 
   // タスクのフィルタリングを管理する
-  const onSelect = useCallback(
-    (v?: TodoStatus) => {
-      if (v) setSelected(v);
-      switch (v ?? selected) {
+  const filterList = useCallback(
+    (v: TodoStatus) => {
+      switch (v) {
         case Status.ALL:
           setFilteredTodo(todo.filter((t) => !t.deleted));
           break;
@@ -71,7 +70,7 @@ export function useTodoList() {
           setFilteredTodo(todo);
       }
     },
-    [todo, selected]
+    [todo]
   );
 
   // タスクの状態を切り替える
@@ -160,8 +159,8 @@ export function useTodoList() {
 
   // useEffect を使って、todo の変更を監視し、フィルタリングを行う
   useEffect(() => {
-    onSelect();
-  }, [onSelect]);
+    filterList(selected);
+  }, [filterList, selected]);
 
   //
   return [
@@ -169,7 +168,7 @@ export function useTodoList() {
     {
       onChangeNewTask,
       addTask,
-      onSelect,
+      setSelected,
       toggleTask,
       editTask,
       deleteTask,

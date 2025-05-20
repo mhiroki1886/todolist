@@ -35,7 +35,7 @@ function App() {
           <div className="todo-select">
             <select
               value={data.selected}
-              onChange={(e) => handle.onSelect(e.currentTarget.value as TodoStatus)}
+              onChange={(e) => handle.setSelected(e.currentTarget.value as TodoStatus)}
             >
               <option value={Status.ALL}>全て</option>
               <option value={Status.ACTIVE}>未完了</option>
