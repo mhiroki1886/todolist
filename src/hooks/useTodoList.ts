@@ -22,9 +22,12 @@ export function useTodoList() {
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   // ローカルストレージに todo を保存する関数
-  const setStorage = (newTodo: Todo[]) => {
-    localStorage.setItem(lsKey, JSON.stringify(newTodo));
-  };
+  const setStorage = useCallback(
+    (newTodo: Todo[]) => {
+      localStorage.setItem(lsKey, JSON.stringify(newTodo));
+    },
+    [lsKey]
+  );
 
   // 新しいタスクの入力を管理する
   const onChangeNewTask = (newTask: string) => {
@@ -40,7 +43,6 @@ export function useTodoList() {
       done: false,
     };
     setTodo([...todo, newTodo]);
-    setStorage([...todo, newTodo]);
     setIsSnackbarOpen(true);
     setSnackbarMessage("タスクを追加しました。");
     setTimeout(() => {
@@ -81,7 +83,6 @@ export function useTodoList() {
       }
       return t;
     });
-    setStorage(newTodo);
     setTodo(newTodo);
     setIsSnackbarOpen(true);
     setSnackbarMessage("タスクの状態を変更しました。");
@@ -99,7 +100,6 @@ export function useTodoList() {
       }
       return t;
     });
-    setStorage(newTodo);
     setTodo(newTodo);
   };
 
@@ -111,7 +111,6 @@ export function useTodoList() {
       }
       return t;
     });
-    setStorage(newTodo);
     setTodo(newTodo);
     setIsSnackbarOpen(true);
     setSnackbarMessage("タスクを削除しました。");
@@ -129,7 +128,6 @@ export function useTodoList() {
       }
       return t;
     });
-    setStorage(newTodo);
     setTodo(newTodo);
   };
 
@@ -146,7 +144,6 @@ export function useTodoList() {
   // ゴミ箱を空にする
   const allDeleteTask = () => {
     const newTodo = todo.filter((t) => !t.deleted);
-    setStorage(newTodo);
     setTodo(newTodo);
     toggleAlertDialog();
     setIsSnackbarOpen(true);
@@ -161,6 +158,10 @@ export function useTodoList() {
   useEffect(() => {
     filterList(selected);
   }, [filterList, selected]);
+
+  useEffect(() => {
+    setStorage(todo);
+  }, [setStorage, todo]);
 
   //
   return [
